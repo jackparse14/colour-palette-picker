@@ -93,3 +93,14 @@ table{
     height: 2rem;
     margin-right:10px;
 }
+th{
+    width: 20%;
+}
+.lock-btn{
+    background-color: transparent;
+    border:none;
+}
+.lock-btn > img{
+    margin-top: 1vmin;
+    width:20%;
+}
