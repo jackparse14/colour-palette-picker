@@ -4,36 +4,35 @@
 window.addEventListener('load', () => {
   const hexCharacters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
   const generateBtn = document.getElementById('generate-btn');
+  const saveBtn = document.getElementById('save-btn');
 
   const lockColourBtns = document.getElementsByClassName('lock-btn');
+  const palette = document.getElementById('palette');
+  let currColours = [];
 
-  function unlockImage(lockImg, colour) {
+  function unlockImage(lockImg) {
     lockImg.src = '/assets/open-padlock.png';
     lockImg.alt = 'An image of an open padlock';
-    colour.isLocked = false;
   }
-  function lockImage(lockImg, colour) {
+  function lockImage(lockImg) {
     lockImg.src = '/assets/lock.png';
     lockImg.alt = 'An image of a closed padlock';
-    colour.isLocked = true;
-  }
-  function lockColour() {
-
-  }
-  function unlockColour() {
-
   }
 
   function changeLockState(lockBtn) {
     const lockImg = lockBtn.firstElementChild;
     const colour = lockBtn.parentElement;
     if (!colour.isLocked) {
-      lockImage(lockImg, colour);
-      lockColour();
+      lockImage(lockImg);
+      colour.isLocked = true;
     } else {
-      unlockImage(lockImg, colour);
-      unlockColour();
+      unlockImage(lockImg);
+      colour.isLocked = false;
     }
+  }
+
+  function savePalette() {
+    localStorage.setItem('palette', JSON.stringify(currColours));
   }
 
   for (const lockBtn of lockColourBtns) {
@@ -51,18 +50,22 @@ window.addEventListener('load', () => {
     return hexString;
   }
   function createPalette() {
-    const palette = document.getElementById('palette');
+    currColours = [];
     for (const colour of palette.children) {
       if (!colour.isLocked) {
         const currColour = getColour();
         colour.style.backgroundColor = currColour;
         colour.firstElementChild.innerHTML = currColour;
       }
+      currColours.push(colour.firstElementChild.innerHTML);
     }
   }
   createPalette();
 
   generateBtn.addEventListener('click', () => {
     createPalette();
+  });
+  saveBtn.addEventListener('click', () => {
+    savePalette();
   });
 });

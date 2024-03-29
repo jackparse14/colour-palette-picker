@@ -99,8 +99,9 @@ th{
 .lock-btn{
     background-color: transparent;
     border:none;
+    width:20%;
 }
 .lock-btn > img{
     margin-top: 1vmin;
-    width:20%;
+    width:100%;
 }
