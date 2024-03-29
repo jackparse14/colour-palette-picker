@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-plusplus */
 window.addEventListener('load', () => {
@@ -6,22 +7,39 @@ window.addEventListener('load', () => {
 
   const lockColourBtns = document.getElementsByClassName('lock-btn');
 
-  function changeLockImage(lockBtn) {
+  function unlockImage(lockImg, colour) {
+    lockImg.src = '/assets/open-padlock.png';
+    lockImg.alt = 'An image of an open padlock';
+    colour.isLocked = false;
+  }
+  function lockImage(lockImg, colour) {
+    lockImg.src = '/assets/lock.png';
+    lockImg.alt = 'An image of a closed padlock';
+    colour.isLocked = true;
+  }
+  function lockColour() {
+
+  }
+  function unlockColour() {
+
+  }
+
+  function changeLockState(lockBtn) {
     const lockImg = lockBtn.firstElementChild;
-    if (!lockImg.stateLocked) {
-      lockImg.src = '/assets/lock.png';
-      lockImg.alt = 'An image of a closed padlock';
-      lockImg.stateLocked = true;
+    const colour = lockBtn.parentElement;
+    if (!colour.isLocked) {
+      lockImage(lockImg, colour);
+      lockColour();
     } else {
-      lockImg.src = '/assets/open-padlock.png';
-      lockImg.alt = 'An image of an open padlock';
-      lockImg.stateLocked = false;
+      unlockImage(lockImg, colour);
+      unlockColour();
     }
   }
+
   for (const lockBtn of lockColourBtns) {
-    lockBtn.firstElementChild.stateLocked = false;
+    lockBtn.parentElement.isLocked = false;
     lockBtn.addEventListener('click', () => {
-      changeLockImage(lockBtn);
+      changeLockState(lockBtn);
     });
   }
 
@@ -35,9 +53,11 @@ window.addEventListener('load', () => {
   function createPalette() {
     const palette = document.getElementById('palette');
     for (const colour of palette.children) {
-      const currColour = getColour();
-      colour.style.backgroundColor = currColour;
-      colour.firstElementChild.innerHTML = currColour;
+      if (!colour.isLocked) {
+        const currColour = getColour();
+        colour.style.backgroundColor = currColour;
+        colour.firstElementChild.innerHTML = currColour;
+      }
     }
   }
   createPalette();
