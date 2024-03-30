@@ -6,7 +6,7 @@
         <title>Colour Palette Picker</title>
         <link rel="stylesheet" href="/css/styles.css"/>
         <link rel="shortcut icon" href="assets/logo.png"/>
-        <script type="text/javascript" src="/javascript/main.js"></script>
+        <script type="module" src="/javascript/main.js"></script>
     </head>
     <body class="white">
         <header class="orange center">
@@ -17,7 +17,14 @@
                     <ul class="center-vertical">
                         <li class="content-font"><button type="button" id="generate-btn">Generate</button></li>
                         <li class="content-font"><button type="button" id="save-btn">Save</button></li>
-                        <li class="content-font"><button type="button" id="export-btn">Export</button></li>
+                        <li class="content-font">
+                            <button type="button" id="export-btn">Export</button>
+                            <div id="export-dropdown">
+                                <button type="button" id="export-css-btn" class="export-as-btn">As CSS</button>
+                                <button type="button" id="export-json-btn" class="export-as-btn">As JSON</button>
+                                <button type="button" id="export-hex-btn" class="export-as-btn">As HEX</button>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -48,6 +55,13 @@
                     </th>
                 </tr>
             </table>
+            <dialog id="export-pop-up">
+                <div class="center flex-column">
+                    <h2 id="heading-text" class="header-font">HEADING TEXT</h2>
+                    <p id="main-text" class="content-font">Export text </p>
+                    <button type="button" id="exit-btn" autofocus>Exit</button>
+                </div>
+            </dialog>
         </main>
         <footer class="yellow center">
             <ul class="container-xl">
