@@ -74,6 +74,13 @@ window.addEventListener('load', () => {
     }
   }
 
+  function hexToDecimal(hexColour) {
+    return parseInt(hexColour, 16);
+  }
+  function checkBrightness(colour) {
+    let hex = colour[1] + colour[2];
+    console.log(hex);
+  }
   function getColour() {
     let hexString = '#';
     for (let i = 0; i < 6; i++) {
@@ -90,6 +97,8 @@ window.addEventListener('load', () => {
         colour.firstElementChild.innerHTML = currColour;
       }
       currColours.push(colour.firstElementChild.innerHTML);
+      checkBrightness(colour);
+      console.log(colour);
     }
   }
   createPalette();
