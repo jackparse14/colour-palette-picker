@@ -21,23 +21,47 @@ window.addEventListener('load', () => {
   const palette = document.getElementById('palette');
   let currColours = [];
 
-  function unlockImage(lockImg) {
-    lockImg.src = '/assets/open-padlock.png';
+  function unlockImage(lockImg, imgString) {
+    lockImg.src = imgString;
     lockImg.alt = 'An image of an open padlock';
   }
-  function lockImage(lockImg) {
-    lockImg.src = '/assets/lock.png';
+  function lockImage(lockImg, imgString) {
+    lockImg.src = imgString;
     lockImg.alt = 'An image of a closed padlock';
   }
 
+  function makeLockWhite(colour) {
+    colour.isWhite = true;
+    if (colour.isLocked) {
+      lockImage(colour.lastElementChild.firstElementChild, '/assets/lock-white.png');
+    } else {
+      unlockImage(colour.lastElementChild.firstElementChild, '/assets/open-padlock-white.png');
+    }
+  }
+  function makeLockBlack(colour) {
+    colour.isWhite = false;
+    if (colour.isLocked) {
+      lockImage(colour.lastElementChild.firstElementChild, '/assets/lock-black.png');
+    } else {
+      unlockImage(colour.lastElementChild.firstElementChild, '/assets/open-padlock-black.png');
+    }
+  }
   function changeLockState(lockBtn) {
     const lockImg = lockBtn.firstElementChild;
     const colour = lockBtn.parentElement;
     if (!colour.isLocked) {
-      lockImage(lockImg);
+      if (colour.isWhite) {
+        lockImage(lockImg, '/assets/lock-white.png');
+      } else {
+        lockImage(lockImg, '/assets/lock-black.png');
+      }
       colour.isLocked = true;
     } else {
-      unlockImage(lockImg);
+      if (colour.isWhite) {
+        unlockImage(lockImg, '/assets/open-padlock-white.png');
+      } else {
+        unlockImage(lockImg, '/assets/open-padlock-black.png');
+      }
       colour.isLocked = false;
     }
   }
@@ -77,9 +101,29 @@ window.addEventListener('load', () => {
   function hexToDecimal(hexColour) {
     return parseInt(hexColour, 16);
   }
+  function changeColourToWhite(colour) {
+    colour.style.color = 'white';
+    makeLockWhite(colour);
+  }
+  function changeColourToBlack(colour) {
+    colour.style.color = 'black';
+    makeLockBlack(colour);
+  }
   function checkBrightness(colour) {
-    let hex = colour[1] + colour[2];
-    console.log(hex);
+    const decimalColour = [];
+    const colourText = colour.firstElementChild.innerHTML;
+    for (let i = 1; i < colourText.length; i += 2) {
+      const hex = colourText[i] + colourText[i + 1];
+      decimalColour.push(hexToDecimal(hex));
+    }
+    const brightness = (
+      (0.2126 * decimalColour[0]) + (0.7152 * decimalColour[1]) + (0.0722 * decimalColour[2])
+    );
+    if (brightness < 128) {
+      changeColourToWhite(colour);
+    } else {
+      changeColourToBlack(colour);
+    }
   }
   function getColour() {
     let hexString = '#';
@@ -98,7 +142,6 @@ window.addEventListener('load', () => {
       }
       currColours.push(colour.firstElementChild.innerHTML);
       checkBrightness(colour);
-      console.log(colour);
     }
   }
   createPalette();
